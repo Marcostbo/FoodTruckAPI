@@ -1,3 +1,9 @@
-from django.shortcuts import render
+from rest_framework.viewsets import ReadOnlyModelViewSet
 
-# Create your views here.
+from .models import Applicant
+from .serializers import ApplicantSerializer
+
+
+class ApplicantViewSet(ReadOnlyModelViewSet):
+    serializer_class = ApplicantSerializer
+    queryset = Applicant.objects.all()
