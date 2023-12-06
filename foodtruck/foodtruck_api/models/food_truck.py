@@ -29,3 +29,6 @@ class FoodTruck(models.Model):
     supervisor_districts = models.IntegerField(null=True, blank=True)
     zip_codes = models.IntegerField(null=True, blank=True)
     neighborhoods = models.IntegerField(null=True, blank=True)
+
+    def __str__(self):
+        return f'{self.facility_type}: {self.applicant.name} - {self.address}'
