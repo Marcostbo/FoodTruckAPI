@@ -1,2 +1,2 @@
-from food_truck import *
-from applicant import *
+from .applicant import *
+from .food_truck import *

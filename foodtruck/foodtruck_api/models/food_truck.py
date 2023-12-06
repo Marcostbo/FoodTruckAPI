@@ -1,7 +1,7 @@
 from django.db import models
 
-from foodtruck.foodtruck_api.models import Applicant
-from foodtruck.foodtruck_api.enums import STATUS_CHOICES, REQUESTED, FACILITY_TYPE_CHOCES
+from .applicant import Applicant
+from ..enums import STATUS_CHOICES, REQUESTED, FACILITY_TYPE_CHOCES
 
 
 class FoodTruck(models.Model):
