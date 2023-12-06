@@ -1,0 +1,19 @@
+APPROVED = 'APPROVED'
+REQUESTED = 'REQUESTED'
+SUSPEND = 'SUSPEND'
+EXPIRED = 'EXPIRED'
+
+STATUS_CHOICES = [
+    (REQUESTED, 'Requested'),
+    (APPROVED, 'Approved'),
+    (SUSPEND, 'Suspend'),
+    (EXPIRED, 'Expired'),
+]
+
+PUSH_TRUCK = 'PUSH_TRUCK'
+TRUCK = 'TRUCK'
+
+FACILITY_TYPE_CHOCES = [
+    (PUSH_TRUCK, 'Push Truck'),
+    (TRUCK, 'Truck')
+]
