@@ -1,4 +1,4 @@
-# Food Truck Finder API
+# :cupcake:	Food Truck Finder API
 
 Welcome to the Food Truck Finder API! This API is designed to help you discover food trucks based on your location using latitude and longitude coordinates.
 
