@@ -84,5 +84,9 @@ Make sure you have the following installed on your machine:
 - /api/foodtrucks/: Retrieve a list of all food trucks.
 - /api/foodtrucks/{food_truck_id}/: Retrieve details of a specific food truck.
 - /api/foodtrucks/search/: Search for food trucks based on location coordinates.
+  - Provide you latitude and longitude and the API will return foodtrucks in a 1km radium of where you are:
+      - http://127.0.0.1:8000/api/foodtrucks/search/?latitude=33.42&longitude=-122.44&limit=5&offset=0
+  - If you want a wider area, you can also provide the radium you desire:
+      - http://127.0.0.1:8000/api/foodtrucks/search/?radium_km=2&latitude=33.42&longitude=-122.44&limit=5&offset=0
 
 Feel free to explore and enjoy the Food Truck Finder API! If you have any questions or feedback, please reach out to us.
