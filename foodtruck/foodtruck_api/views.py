@@ -1,9 +1,10 @@
 from math import radians, cos, sin, degrees
 
+from rest_framework import status
+from rest_framework.decorators import action
 from rest_framework.pagination import LimitOffsetPagination
+from rest_framework.response import Response
 from rest_framework.viewsets import ReadOnlyModelViewSet
-from django.db.models.functions import Cos, Sin, Radians
-from django.db.models import F
 
 from .models import Applicant, FoodTruck
 from .serializers import ApplicantSerializer, FoodTruckSerializer, FoodTruckQuerySerializer
@@ -17,8 +18,10 @@ class ApplicantViewSet(ReadOnlyModelViewSet):
 class FoodTruckViewSet(ReadOnlyModelViewSet):
     serializer_class = FoodTruckSerializer
     pagination_class = LimitOffsetPagination
+    queryset = FoodTruck.objects.all()
 
-    def get_queryset(self):
+    @action(detail=False, methods=['get'], url_path='search')
+    def get_food_trucks(self, request):
         # Input data
         validated_data = FoodTruckQuerySerializer(data=self.request.query_params)
         validated_data.is_valid(raise_exception=True)
@@ -39,7 +42,15 @@ class FoodTruckViewSet(ReadOnlyModelViewSet):
         lon_max = degrees(longitude_rad + (radius_km / earth_radius_km) / cos(latitude_rad))
 
         # Filter FoodTruck model based on bounding box
-        return FoodTruck.objects.filter(
+        selected_food_trucks = FoodTruck.objects.filter(
             latitude__range=(lat_min, lat_max),
             longitude__range=(lon_min, lon_max)
         )
+
+        # Apply pagination
+        page = self.paginate_queryset(selected_food_trucks)
+        if page is not None:
+            serializer = FoodTruckSerializer(page, many=True)
+            return self.get_paginated_response(serializer.data)
+
+        return Response(FoodTruckSerializer(selected_food_trucks, many=True).data, status=status.HTTP_200_OK)
