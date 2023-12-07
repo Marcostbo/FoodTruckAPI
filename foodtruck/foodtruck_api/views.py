@@ -1,10 +1,13 @@
-from math import radians, cos, sin, degrees
+from math import radians, cos, degrees
 
+from django.db.models.expressions import RawSQL
 from rest_framework import status
 from rest_framework.decorators import action
 from rest_framework.pagination import LimitOffsetPagination
 from rest_framework.response import Response
 from rest_framework.viewsets import ReadOnlyModelViewSet
+
+from django.db.models import FloatField, ExpressionWrapper
 
 from .models import Applicant, FoodTruck
 from .serializers import ApplicantSerializer, FoodTruckSerializer, FoodTruckQuerySerializer
@@ -45,6 +48,23 @@ class FoodTruckViewSet(ReadOnlyModelViewSet):
         selected_food_trucks = FoodTruck.objects.filter(
             latitude__range=(lat_min, lat_max),
             longitude__range=(lon_min, lon_max)
+        )
+
+        # Refined filtering based on the Haversine formula
+        haversine_expression = ExpressionWrapper(
+            RawSQL(
+                "6371 * acos(cos(radians(%s)) * cos(radians(latitude)) * "
+                "cos(radians(longitude) - radians(%s)) + sin(radians(%s)) * sin(radians(latitude)))",
+                [latitude, longitude, latitude],
+                output_field=FloatField()
+            ),
+            output_field=FloatField()
+        )
+
+        selected_food_trucks = selected_food_trucks.annotate(
+            haversine_value=haversine_expression
+        ).filter(
+            haversine_value__lt=radius_km
         )
 
         # Apply pagination
