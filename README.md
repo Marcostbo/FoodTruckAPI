@@ -18,7 +18,7 @@ The Food Truck Finder API allows users to find food trucks in their vicinity by 
 
 Make sure you have the following installed on your machine:
 
-- Python (3.7 or higher)
+- Python (3.10 or higher)
 - pip (Python package installer)
 
 ### Installation
